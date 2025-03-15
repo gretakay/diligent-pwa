@@ -23,7 +23,7 @@ async function subscribeToPush() {
     if (!subscription) {
         subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: "你的_VAPID_PUBLIC_KEY"
+            applicationServerKey: "ctvdXMEv8ATLsrkpowKUOiePuYppOOfA0gJlSbUQKG0"
         });
     }
 
