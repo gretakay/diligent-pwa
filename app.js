@@ -1,12 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
+import { getStorage, ref, uploadBytes } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-storage.js";  // ✅ 新增 Storage 套件
 
 // ✅ Firebase 設定
 const firebaseConfig = {
   apiKey: "AIzaSyDFzFJ7yobQs_HUZKqLlPD7mAxYPCfptLw",
   authDomain: "dill-cc8be.firebaseapp.com",
   projectId: "dill-cc8be",
-  storageBucket: "dill-cc8be.appspot.com", // 修正錯誤的 storageBucket
+  storageBucket: "dill-cc8be.firebasestorage.app", // 修正錯誤的 storageBucket
   messagingSenderId: "51223458709",
   appId: "1:51223458709:web:cd24df76a168e1384c3c9c"
 };
@@ -14,6 +15,14 @@ const firebaseConfig = {
 // ✅ 初始化 Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
+
+// ✅ 初始化 Storage
+const storage = getStorage();
+console.log("✅ Storage 初始化成功", storage);
+
+// 🔍 測試是否能建立 Storage 參考
+const testRef = ref(storage, "test-file.txt");
+console.log("✅ Storage 參考建立成功", testRef);
 
 // 註冊 Service Worker
 if ('serviceWorker' in navigator) {
