@@ -12,7 +12,7 @@
             "type": "image/png"
         },
         {
-            "src": "/diligent-pwa/icon.png",
+            "src": "/diligent-pwa/badge.png",
             "sizes": "512x512",
             "type": "image/png"
         }
