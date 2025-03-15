@@ -20,7 +20,7 @@ async function subscribeToPush(registration) {
     console.log("訂閱成功:", JSON.stringify(subscription));
 
     // 傳送訂閱資訊到 Google Apps Script
-    fetch('https://script.google.com/macros/s/AKfycbzGUdaRAC9POPKV8ACt-Mte3WftYABeLG2klQxOoUSqr9LAGcyfjD6SqHDnsNWY_vuK/exec', {
+    fetch('https://script.google.com/macros/s/AKfycbwqydWpKm4wIuH_7scZKWpmXXu9ObaxJTGQzg75VcQJr3tJDRnKT7wpM3XkHtMhlh4F/exec', {
         method: "POST",
         body: JSON.stringify(subscription),
         headers: {
