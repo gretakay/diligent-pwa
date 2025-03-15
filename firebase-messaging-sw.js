@@ -1,14 +1,13 @@
-importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js");
-importScripts("https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js");
+importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-app-compat.js");
+importScripts("https://www.gstatic.com/firebasejs/9.15.0/firebase-messaging-compat.js");
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDFzFJ7yobQs_HUZKqLlPD7mAxYPCfptLw",
+  apiKey: "AIzaSyDFzFJ7yobQs_HUZKqLlPD7mAxYPCfptLw",
   authDomain: "dill-cc8be.firebaseapp.com",
   projectId: "dill-cc8be",
   storageBucket: "dill-cc8be.firebasestorage.app",
   messagingSenderId: "51223458709",
   appId: "1:51223458709:web:cd24df76a168e1384c3c9c"
-    appId: "你的 Firebase App ID"
 };
 
 // 初始化 Firebase

@@ -6,7 +6,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDFzFJ7yobQs_HUZKqLlPD7mAxYPCfptLw",
   authDomain: "dill-cc8be.firebaseapp.com",
   projectId: "dill-cc8be",
-  storageBucket: "dill-cc8be.firebasestorage.app",
+  storageBucket: "dill-cc8be.firebasestorage.app", // 修正錯誤的 storageBucket
   messagingSenderId: "51223458709",
   appId: "1:51223458709:web:cd24df76a168e1384c3c9c"
 };
@@ -14,6 +14,17 @@ const firebaseConfig = {
 // ✅ 初始化 Firebase
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
+
+// ✅ 註冊 Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register("/firebase-messaging-sw.js")
+        .then((registration) => {
+            console.log("✅ Service Worker 註冊成功！", registration);
+        })
+        .catch((error) => {
+            console.error("⚠️ Service Worker 註冊失敗", error);
+        });
+}
 
 // 🔔 **請求推播權限**
 async function requestPermission() {
@@ -68,9 +79,12 @@ onMessage(messaging, (payload) => {
 
 // ✅ **設置提醒時間**
 function setReminder() {
-    const time = document.getElementById("reminderTime").value;
+    const hour = document.getElementById("reminderHour").value;
+    const minute = document.getElementById("reminderMinute").value;
+    const time = `${hour}:${minute}`;
+    
     localStorage.setItem("reminderTime", time);
-    alert("📅 已儲存提醒時間：" + time);
+    document.getElementById("statusMessage").innerText = `📅 已儲存提醒時間：${time}`;
 }
 
 // ✅ **訂閱推播**
