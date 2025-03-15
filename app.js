@@ -6,7 +6,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDFzFJ7yobQs_HUZKqLlPD7mAxYPCfptLw",
   authDomain: "dill-cc8be.firebaseapp.com",
   projectId: "dill-cc8be",
-  storageBucket: "dill-cc8be.firebasestorage.app", // 修正錯誤的 storageBucket
+  storageBucket: "dill-cc8be.appspot.com", // 修正錯誤的 storageBucket
   messagingSenderId: "51223458709",
   appId: "1:51223458709:web:cd24df76a168e1384c3c9c"
 };
@@ -15,15 +15,15 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
-// ✅ 註冊 Service Worker
+// 註冊 Service Worker
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register("/firebase-messaging-sw.js")
-        .then((registration) => {
-            console.log("✅ Service Worker 註冊成功！", registration);
-        })
-        .catch((error) => {
-            console.error("⚠️ Service Worker 註冊失敗", error);
-        });
+    navigator.serviceWorker.register('/firebase-messaging-sw.js')
+    .then((registration) => {
+        console.log("✅ Service Worker 註冊成功:", registration);
+    })
+    .catch((error) => {
+        console.error("❌ Service Worker 註冊失敗:", error);
+    });
 }
 
 // 🔔 **請求推播權限**
