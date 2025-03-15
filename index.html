@@ -4,35 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>每日發四弘誓願提醒</title>
+    <link rel="icon" href="icon.png">  <!-- 解決 favicon.ico 404 錯誤 -->
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <h1>每日發四弘誓願提醒</h1>
 
-    <label>設定每日提醒時間：</label>
+    <!-- 選擇提醒時間 -->
+    <label for="reminderTime">設定每日提醒時間：</label>
     <select id="reminderTime">
         <option value="06:00">上午 06:00</option>
         <option value="07:00">上午 07:00</option>
         <option value="08:00">上午 08:00</option>
-        <option value="09:00">上午 09:00</option>
-        <option value="10:00">上午 10:00</option>
-        <option value="11:00">上午 11:00</option>
-        <option value="12:00">中午 12:00</option>
-        <option value="13:00">下午 01:00</option>
-        <option value="14:00">下午 02:00</option>
-        <option value="15:00">下午 03:00</option>
-        <option value="16:00">下午 04:00</option>
-        <option value="17:00">下午 05:00</option>
         <option value="18:00">下午 06:00</option>
         <option value="19:00">下午 07:00</option>
-        <option value="20:00">晚上 08:00</option>
-        <option value="21:00">晚上 09:00</option>
-        <option value="22:00">晚上 10:00</option>
+        <option value="20:00">下午 08:00</option>
+		<option value="22:00">下午 10:00</option>
+        <option value="22:10">下午 10:10</option>
+        <option value="22:15">下午 10:15</option>
+        <option value="10:20">下午 10:20</option>
     </select>
-    
-    <button onclick="setReminder()">儲存提醒</button>
-    <button onclick="subscribeToPush()">啟用每日提醒</button>
 
-    <script src="app.js"></script>
+    <!-- 設定按鈕 -->
+    <button id="saveReminder">儲存提醒</button>
+    <button id="enablePush">啟用每日提醒</button>
+
+    <p id="statusMessage"></p> <!-- 狀態訊息顯示區 -->
+
+    <!-- 引入 JavaScript -->
+    <script type="module">
+        import { setReminder, subscribeToPush } from "./app.js";
+
+        document.getElementById("saveReminder").addEventListener("click", setReminder);
+        document.getElementById("enablePush").addEventListener("click", subscribeToPush);
+    </script>
 </body>
 </html>
