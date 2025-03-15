@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>四弘誓願提醒</title>
+    <title>每日發四弘誓願提醒</title>
     <link rel="manifest" href="manifest.json">
-    <base href="/diligent-pwa/">
-    <script defer src="app.js"></script>
 </head>
 <body>
     <h1>每日發四弘誓願提醒</h1>
-    <button id="enableNotifications">啟用每日提醒</button>
+    <label>設定每日提醒時間：</label>
+    <input type="time" id="reminderTime">
+    <button onclick="setReminder()">儲存提醒</button>
+    <button onclick="subscribeToPush()">啟用每日提醒</button>
+
+    <script src="app.js"></script>
 </body>
 </html>
