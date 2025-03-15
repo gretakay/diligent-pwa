@@ -1,55 +1,64 @@
-const FIREBASE_SERVER_KEY = "BNtFsLM3nWo29XIPahZnhsTbgHDUbCVZQZ0BYmUJNG5VoZMfwQoBO90zPasliyRt1DZ6M_R7uoqkQhx5ceKlF5Y";
-const FIREBASE_SENDER_ID = "51223458709 ";
+// 引入 Firebase SDK
+import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
-// **1️⃣ 儲存提醒時間**
-function setReminder() {
-    const time = document.getElementById("reminderTime").value;
-    localStorage.setItem("reminderTime", time);
-    alert(`提醒時間已設定為 ${time}`);
+// 🔹 **請更新這裡的 Firebase 設定**
+const firebaseConfig = {
+  authDomain: "dill-cc8be.firebaseapp.com",
+  projectId: "dill-cc8be",
+  storageBucket: "dill-cc8be.firebasestorage.app",
+  messagingSenderId: "51223458709",
+  appId: "1:51223458709:web:cd24df76a168e1384c3c9c"
+};
+
+// 🔹 **初始化 Firebase**
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+
+// 🔹 **請求推播權限 & 取得 Token**
+async function requestNotificationPermission() {
+    try {
+        // 1️⃣ 請求瀏覽器的通知權限
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+            throw new Error("通知權限未授予");
+        }
+
+        // 2️⃣ 取得 FCM 推播 Token (請確保 VAPID 公鑰正確)
+        const token = await getToken(messaging, { vapidKey: "
+BNtFsLM3nWo29XIPahZnhsTbgHDUbCVZQZ0BYmUJNG5VoZMfwQoBO90zPasliyRt1DZ6M_R7uoqkQhx5ceKlF5Y" });
+        console.log("📌 獲得推播 Token:", token);
+
+        // 3️⃣ 這裡可以將 Token 上傳到 Firebase Database 或 Cloud Functions
+        saveTokenToServer(token);
+
+    } catch (error) {
+        console.error("❌ 無法取得推播 Token:", error);
+    }
 }
 
-// **2️⃣ 訂閱 Web Push**
-async function subscribeToPush() {
-    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
-        console.log("不支援 Web Push");
-        return;
-    }
-
-    const registration = await navigator.serviceWorker.register("service-worker.js");
-    console.log("Service Worker 註冊成功", registration);
-
-    let subscription = await registration.pushManager.getSubscription();
-    if (!subscription) {
-        subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array(FIREBASE_SENDER_ID)
-        });
-    }
-
-    console.log("已訂閱推播:", subscription);
-
-    // **發送訂閱資訊到 Firebase**
-    await fetch("https://fcm.googleapis.com/fcm/send", {
+// 🔹 **上傳推播 Token 到 Firebase**
+function saveTokenToServer(token) {
+    fetch("你的 Firebase Cloud Function API", {
         method: "POST",
-        headers: {
-            "Authorization": `key=${FIREBASE_SERVER_KEY}`,
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            to: subscription.endpoint,
-            notification: {
-                title: "每日發四弘誓願",
-                body: "眾生無邊誓願度 煩惱無盡誓願斷 法門無量誓願學 佛道無上誓願成",
-                icon: "/icon.png"
-            }
-        })
-    });
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: token })
+    })
+    .then(response => response.json())
+    .then(data => console.log("✅ Token 已儲存:", data))
+    .catch(error => console.error("❌ 無法儲存 Token:", error));
 }
 
-// **轉換 VAPID Key 格式**
-function urlBase64ToUint8Array(base64String) {
-    const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-    const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
-    const rawData = window.atob(base64);
-    return new Uint8Array([...rawData].map(char => char.charCodeAt(0)));
-}
+// 🔹 **監聽推播通知**
+onMessage(messaging, (payload) => {
+    console.log("📩 收到推播:", payload);
+    new Notification(payload.notification.title, {
+        body: payload.notification.body,
+        icon: "/icon.png"
+    });
+});
+
+// 🔹 **啟動推播權限請求**
+document.getElementById("enableNotifications").addEventListener("click", () => {
+    requestNotificationPermission();
+});
