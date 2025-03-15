@@ -1,7 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
 import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
 
-// ✅ 你的 Firebase 設定
+// ✅ Firebase 設定
 const firebaseConfig = {
   apiKey: "AIzaSyDFzFJ7yobQs_HUZKqLlPD7mAxYPCfptLw",
   authDomain: "dill-cc8be.firebaseapp.com",
@@ -78,9 +78,8 @@ function subscribeToPush() {
     requestPermission();
 }
 
-// 🟢 **確保這些函式可供 HTML 使用**
-window.setReminder = setReminder;
-window.subscribeToPush = subscribeToPush;
+// 🟢 **確保函式可被 index.html 匯入**
+export { setReminder, subscribeToPush };
 
 // 🚀 **載入時自動請求推播權限**
 document.addEventListener("DOMContentLoaded", () => {

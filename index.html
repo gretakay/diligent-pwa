@@ -4,26 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>每日發四弘誓願提醒</title>
-    <link rel="icon" href="icon.png">  <!-- 解決 favicon.ico 404 錯誤 -->
+    <link rel="icon" href="icon.png">
     <link rel="manifest" href="manifest.json">
 </head>
 <body>
     <h1>每日發四弘誓願提醒</h1>
 
     <!-- 選擇提醒時間 -->
-    <label for="reminderTime">設定每日提醒時間：</label>
-    <select id="reminderTime">
-        <option value="06:00">上午 06:00</option>
-        <option value="07:00">上午 07:00</option>
-        <option value="08:00">上午 08:00</option>
-        <option value="18:00">下午 06:00</option>
-        <option value="19:00">下午 07:00</option>
-        <option value="20:00">下午 08:00</option>
-		<option value="22:00">下午 10:00</option>
-        <option value="22:10">下午 10:10</option>
-        <option value="22:15">下午 10:15</option>
-        <option value="10:20">下午 10:20</option>
-    </select>
+    <label for="hourSelect">設定每日提醒時間：</label>
+    <select id="hourSelect"></select> 時
+    <select id="minuteSelect"></select> 分
 
     <!-- 設定按鈕 -->
     <button id="saveReminder">儲存提醒</button>
@@ -35,8 +25,40 @@
     <script type="module">
         import { setReminder, subscribeToPush } from "./app.js";
 
-        document.getElementById("saveReminder").addEventListener("click", setReminder);
-        document.getElementById("enablePush").addEventListener("click", subscribeToPush);
+        // 動態生成 小時 & 分鐘 選單
+        function populateTimeOptions() {
+            const hourSelect = document.getElementById("hourSelect");
+            const minuteSelect = document.getElementById("minuteSelect");
+
+            // 生成小時 (0 - 23)
+            for (let i = 0; i < 24; i++) {
+                let hour = i < 10 ? `0${i}` : i; // 格式化為 兩位數
+                let option = new Option(hour, hour);
+                hourSelect.add(option);
+            }
+
+            // 生成分鐘 (00, 05, 10, ..., 55)
+            for (let i = 0; i < 60; i += 5) {
+                let minute = i < 10 ? `0${i}` : i; // 格式化為 兩位數
+                let option = new Option(minute, minute);
+                minuteSelect.add(option);
+            }
+        }
+
+        // 儲存提醒時間
+        document.getElementById("saveReminder").addEventListener("click", () => {
+            setReminder();
+            document.getElementById("statusMessage").textContent = "📅 提醒時間已儲存！";
+        });
+
+        // 啟用 Web Push 通知
+        document.getElementById("enablePush").addEventListener("click", async () => {
+            await subscribeToPush();
+            document.getElementById("statusMessage").textContent = "🔔 推播通知已啟用！";
+        });
+
+        // 頁面加載後填充時間選單
+        document.addEventListener("DOMContentLoaded", populateTimeOptions);
     </script>
 </body>
 </html>
