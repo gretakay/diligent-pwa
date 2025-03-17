@@ -5,7 +5,7 @@ if (window.navigator.standalone) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
-    // 取得提醒時間
+    // 取得提醒時間 (20250317 加入firebase以前的版本)
     loadReminderTime();
 
     // 訂閱推播
