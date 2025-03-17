@@ -1,104 +1,72 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-import { getMessaging, getToken, onMessage } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging.js";
+document.addEventListener("DOMContentLoaded", async () => {
+    // 取得提醒時間
+    loadReminderTime();
 
+    // 訂閱推播
+    await subscribeToPush();
 
-// ✅ Firebase 設定
-const firebaseConfig = {
-  apiKey: "AIzaSyDFzFJ7yobQs_HUZKqLlPD7mAxYPCfptLw",
-  authDomain: "dill-cc8be.firebaseapp.com",
-  projectId: "dill-cc8be",
-  storageBucket: "dill-cc8be.firebasestorage.app", // 修正錯誤的 storageBucket
-  messagingSenderId: "51223458709",
-  appId: "1:51223458709:web:cd24df76a168e1384c3c9c"
-};
-
-// ✅ 初始化 Firebase
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-
-// 註冊 Service Worker
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/firebase-messaging-sw.js')
-    .then((registration) => {
-        console.log("✅ Service Worker 註冊成功:", registration);
-    })
-    .catch((error) => {
-        console.error("❌ Service Worker 註冊失敗:", error);
-    });
-}
-
-// 🔔 **請求推播權限**
-async function requestPermission() {
-    try {
-        const permission = await Notification.requestPermission();
-        if (permission === "granted") {
-            console.log("🔔 推播權限已允許");
-            getPushToken(); // 取得 Token
-        } else {
-            console.warn("⛔ 推播權限被拒絕");
-        }
-    } catch (err) {
-        console.error("⚠️ 請求推播權限失敗:", err);
-    }
-}
-
-// 🎫 **取得推播 Token**
-async function getPushToken() {
-    try {
-        const token = await getToken(messaging, { vapidKey: "BNtFsLM3nWo29XIPahZnhsTbgHDUbCVZQZ0BYmUJNG5VoZMfwQoBO90zPasliyRt1DZ6M_R7uoqkQhx5ceKlF5Y" });
-        if (token) {
-            console.log("✅ 推播 Token:", token);
-            sendTokenToServer(token); // 儲存 Token
-        } else {
-            console.warn("⚠️ 無法取得推播 Token");
-        }
-    } catch (err) {
-        console.error("⚠️ 取得推播 Token 失敗:", err);
-    }
-}
-
-// 📤 **將 Token 傳送到伺服器**
-function sendTokenToServer(token) {
-    fetch("https://us-central1-dill-cc8be.cloudfunctions.net/sendPushNotification", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: token })
-    })
-    .then(response => response.json())
-    .then(data => console.log("✅ Token 上傳成功:", data))
-    .catch(err => console.error("⚠️ Token 上傳失敗:", err));
-}
-
-// 📬 **接收推播通知**
-onMessage(messaging, (payload) => {
-    console.log("📩 收到推播:", payload);
-    new Notification(payload.notification.title, {
-        body: payload.notification.body,
-        icon: "/icon.png"
-    });
+    // 每分鐘檢查是否需要發送提醒
+    setInterval(checkReminder, 60000);
 });
 
-// ✅ **設置提醒時間**
+// **1️⃣ 訂閱 Web Push**
+async function subscribeToPush() {
+    if (!("serviceWorker" in navigator) || !("PushManager" in window)) {
+        console.log("不支援 Web Push");
+        return;
+    }
+
+    const registration = await navigator.serviceWorker.register("service-worker.js");
+    console.log("Service Worker 註冊成功", registration);
+
+    let subscription = await registration.pushManager.getSubscription();
+    if (!subscription) {
+        subscription = await registration.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: "你的_VAPID_PUBLIC_KEY"
+        });
+    }
+
+    console.log("已訂閱推播:", subscription);
+}
+
+// **2️⃣ 設定提醒時間**
 function setReminder() {
-    const hour = document.getElementById("reminderHour").value;
-    const minute = document.getElementById("reminderMinute").value;
-    const time = `${hour}:${minute}`;
-    
-    localStorage.setItem("reminderTime", time);
-    document.getElementById("statusMessage").innerText = `📅 已儲存提醒時間：${time}`;
-}
-
-// ✅ **訂閱推播**
-function subscribeToPush() {
-    requestPermission();
-}
-
-// 🟢 **確保函式可被 index.html 匯入**
-export { setReminder, subscribeToPush };
-
-// 🚀 **載入時自動請求推播權限**
-document.addEventListener("DOMContentLoaded", () => {
-    if (Notification.permission === "granted") {
-        getPushToken();
+    const time = document.getElementById("reminderTime").value;
+    if (!time) {
+        alert("請選擇提醒時間！");
+        return;
     }
-});
+
+    localStorage.setItem("reminderTime", time);
+    alert(`提醒時間已設定為 ${time}`);
+}
+
+// **3️⃣ 載入已儲存的提醒時間**
+function loadReminderTime() {
+    const savedTime = localStorage.getItem("reminderTime");
+    if (savedTime) {
+        document.getElementById("reminderTime").value = savedTime;
+    }
+}
+
+// **4️⃣ 每分鐘檢查是否應該發送提醒**
+function checkReminder() {
+    const now = new Date();
+    const currentTime = now.getHours().toString().padStart(2, "0") + ":" + now.getMinutes().toString().padStart(2, "0");
+    const reminderTime = localStorage.getItem("reminderTime");
+
+    if (reminderTime && currentTime === reminderTime) {
+        sendPushNotification();
+    }
+}
+
+// **5️⃣ 直接顯示通知（不透過伺服器）**
+function sendPushNotification() {
+    navigator.serviceWorker.ready.then(registration => {
+        registration.showNotification("每日發四弘誓願", {
+            body: "眾生無邊誓願度，煩惱無盡誓願斷，法門無量誓願學，佛道無上誓願成",
+            icon: "/icon.png"
+        });
+    });
+}
