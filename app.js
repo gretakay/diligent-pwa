@@ -22,7 +22,7 @@ async function subscribeToPush() {
         return;
     }
 
-    const registration = await navigator.serviceWorker.register("/service-worker.js");
+    const registration = await navigator.serviceWorker.register("service-worker.js");
     console.log("Service Worker 註冊成功", registration);
 
     let subscription = await registration.pushManager.getSubscription();
