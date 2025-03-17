@@ -17,5 +17,7 @@
             "sizes": "512x512",
             "type": "image/png"
         }
-    ]
+    ],
+    "description": "每日發四弘誓願提醒應用",
+    "lang": "zh-TW"
 }
