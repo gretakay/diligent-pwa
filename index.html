@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 讓 iOS 支援 PWA 並全螢幕顯示 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="每日發四弘誓願提醒">
     <title>每日發四弘誓願提醒</title>
+    <link rel="manifest" href="manifest.json">
+    <!-- 設定 PWA 圖示，iOS 需要 apple-touch-icon -->
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- 設定適用範圍，避免 iOS PWA 開啟時跳轉到 Safari -->
     <link rel="manifest" href="manifest.json">
 </head>
 <body>

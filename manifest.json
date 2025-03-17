@@ -2,6 +2,7 @@
     "name": "每日發四弘誓願提醒",
     "short_name": "誓願提醒",
     "start_url": "/index.html",
+    "scope": "/",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#000000",

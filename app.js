@@ -1,3 +1,9 @@
+if (window.navigator.standalone) {
+    console.log("PWA 正在 Standalone 模式執行");
+} else {
+    console.log("PWA 在瀏覽器內執行");
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     // 取得提醒時間
     loadReminderTime();
@@ -16,14 +22,14 @@ async function subscribeToPush() {
         return;
     }
 
-    const registration = await navigator.serviceWorker.register("service-worker.js");
+    const registration = await navigator.serviceWorker.register("/service-worker.js");
     console.log("Service Worker 註冊成功", registration);
 
     let subscription = await registration.pushManager.getSubscription();
     if (!subscription) {
         subscription = await registration.pushManager.subscribe({
             userVisibleOnly: true,
-            applicationServerKey: "你的_VAPID_PUBLIC_KEY"
+            applicationServerKey: "BDX28SBzyfKzjxbUJXoIOwtEwQjcYfiJ2XcDzYhMrF6BJUHWFIEKviZpLVKIquXgEy6gmxUbjqETyT3GLQQxpg8"
         });
     }
 
