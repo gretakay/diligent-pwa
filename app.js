@@ -1,3 +1,21 @@
+import { initializeApp } from "firebase/app";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+
+// Firebase 配置
+const firebaseConfig = {
+    apiKey: "AIzaSyDFzFJ7yobQs_HUZKqLlPD7mAxYPCfptLw",
+    authDomain: "dill-cc8be.firebaseapp.com",
+    projectId: "dill-cc8be",
+    storageBucket: "dill-cc8be.firebasestorage.app",
+    messagingSenderId: "51223458709",
+    appId: "1:51223458709:web:cd24df76a168e1384c3c9c",
+    measurementId: "G-KQ91HMD2FX"
+};
+
+// 初始化 Firebase
+const app = initializeApp(firebaseConfig);
+const messaging = getMessaging(app);
+
 if (window.navigator.standalone) {
     console.log("PWA 正在 Standalone 模式執行");
 } else {
@@ -25,15 +43,24 @@ async function subscribeToPush() {
     const registration = await navigator.serviceWorker.register("./service-worker.js");
     console.log("Service Worker 註冊成功", registration);
 
-    let subscription = await registration.pushManager.getSubscription();
-    if (!subscription) {
-        subscription = await registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: "BDX28SBzyfKzjxbUJXoIOwtEwQjcYfiJ2XcDzYhMrF6BJUHWFIEKviZpLVKIquXgEy6gmxUbjqETyT3GLQQxpg8"
-        });
-    }
-
-    console.log("已訂閱推播:", subscription);
+    // 獲取 FCM 訂閱令牌
+    getToken(messaging, { vapidKey: "BNtFsLM3nWo29XIPahZnhsTbgHDUbCVZQZ0BYmUJNG5VoZMfwQoBO90zPasliyRt1DZ6M_R7uoqkQhx5ceKlF5Y" }).then((currentToken) => {
+        if (currentToken) {
+            console.log("FCM 訂閱令牌:", currentToken);
+            // 將訂閱令牌發送到 Firebase Cloud Functions
+            fetch('https://dill-cc8be.cloudfunctions.net/sendPushNotification', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ tokens: [currentToken], payload: "這是一條測試推播通知" })
+            });
+        } else {
+            console.log("無法獲取 FCM 訂閱令牌");
+        }
+    }).catch((err) => {
+        console.log("獲取 FCM 訂閱令牌時發生錯誤:", err);
+    });
 }
 
 // **2️⃣ 設定提醒時間**

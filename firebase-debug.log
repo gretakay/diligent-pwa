@@ -1,0 +1,79 @@
+[debug] [2025-03-18T14:58:23.265Z] ----------------------------------------------------------------------
+[debug] [2025-03-18T14:58:23.269Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\greta\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js init functions
+[debug] [2025-03-18T14:58:23.270Z] CLI Version:   13.34.0
+[debug] [2025-03-18T14:58:23.270Z] Platform:      win32
+[debug] [2025-03-18T14:58:23.270Z] Node Version:  v22.14.0
+[debug] [2025-03-18T14:58:23.271Z] Time:          Tue Mar 18 2025 22:58:23 GMT+0800 (台北標準時間)
+[debug] [2025-03-18T14:58:23.271Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2025-03-18T14:58:23.641Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-18T14:58:23.642Z] > authorizing via signed-in user (monica24685@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  C:\Users\greta
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[debug] [2025-03-18T14:58:42.902Z] Using project from CLI flag: dill-cc8be
+[debug] [2025-03-18T14:58:42.904Z] Checked if tokens are valid: true, expires at: 1742313121915
+[debug] [2025-03-18T14:58:42.904Z] Checked if tokens are valid: true, expires at: 1742313121915
+[debug] [2025-03-18T14:58:42.906Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/dill-cc8be [none]
+[debug] [2025-03-18T14:58:43.440Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/dill-cc8be 200
+[debug] [2025-03-18T14:58:43.441Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/dill-cc8be {"projectId":"dill-cc8be","projectNumber":"51223458709","displayName":"dill","name":"projects/dill-cc8be","resources":{"hostingSite":"dill-cc8be"},"state":"ACTIVE","etag":"1_f0c265d9-651c-4eb4-90df-f1a9b9f1c60e"}
+[info] i  Using project dill-cc8be (dill) 
+[info] 
+=== Functions Setup
+[debug] [2025-03-18T14:58:43.450Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2025-03-18T14:58:43.451Z] > authorizing via signed-in user (monica24685@gmail.com)
+[debug] [2025-03-18T14:58:43.451Z] [iam] checking project dill-cc8be for permissions ["firebase.projects.get"]
+[debug] [2025-03-18T14:58:43.452Z] Checked if tokens are valid: true, expires at: 1742313121915
+[debug] [2025-03-18T14:58:43.452Z] Checked if tokens are valid: true, expires at: 1742313121915
+[debug] [2025-03-18T14:58:43.453Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/dill-cc8be:testIamPermissions [none]
+[debug] [2025-03-18T14:58:43.453Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/dill-cc8be:testIamPermissions x-goog-quota-user=projects/dill-cc8be
+[debug] [2025-03-18T14:58:43.453Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/dill-cc8be:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-03-18T14:58:44.276Z] <<< [apiv2][status] POST https://cloudresourcemanager.googleapis.com/v1/projects/dill-cc8be:testIamPermissions 200
+[debug] [2025-03-18T14:58:44.276Z] <<< [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/dill-cc8be:testIamPermissions {"permissions":["firebase.projects.get"]}
+[debug] [2025-03-18T14:58:44.279Z] Checked if tokens are valid: true, expires at: 1742313121915
+[debug] [2025-03-18T14:58:44.279Z] Checked if tokens are valid: true, expires at: 1742313121915
+[debug] [2025-03-18T14:58:44.280Z] Checked if tokens are valid: true, expires at: 1742313121915
+[debug] [2025-03-18T14:58:44.281Z] Checked if tokens are valid: true, expires at: 1742313121915
+[debug] [2025-03-18T14:58:44.281Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/dill-cc8be/services/cloudfunctions.googleapis.com [none]
+[debug] [2025-03-18T14:58:44.281Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/dill-cc8be/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/dill-cc8be
+[debug] [2025-03-18T14:58:44.286Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/dill-cc8be/services/runtimeconfig.googleapis.com [none]
+[debug] [2025-03-18T14:58:44.286Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/dill-cc8be/services/runtimeconfig.googleapis.com x-goog-quota-user=projects/dill-cc8be
+[debug] [2025-03-18T14:58:45.448Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/dill-cc8be/services/runtimeconfig.googleapis.com 200
+[debug] [2025-03-18T14:58:45.448Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/dill-cc8be/services/runtimeconfig.googleapis.com [omitted]
+[debug] [2025-03-18T14:58:45.492Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/dill-cc8be/services/cloudfunctions.googleapis.com 200
+[debug] [2025-03-18T14:58:45.493Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/dill-cc8be/services/cloudfunctions.googleapis.com [omitted]
+[info] 
+Detected existing codebase(s): default, puping-web, puping-web1
+
+[info] Let's create a new codebase for your functions.
+[info] A directory corresponding to the codebase will be created in your project
+[info] with sample code pre-configured.
+
+[info] See https://firebase.google.com/docs/functions/organize-functions for
+[info] more information on organizing your functions using codebases.
+
+[info] Functions can be deployed with firebase deploy.
+
+[info] +  Wrote web-push/package.json 
+[info] +  Wrote web-push/.eslintrc.js 
+[info] +  Wrote web-push/index.js 
+[info] +  Wrote web-push/.gitignore 
