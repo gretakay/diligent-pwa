@@ -23,6 +23,16 @@ if (window.navigator.standalone) {
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
+    // 註冊 Service Worker
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/firebase-messaging-sw.js")
+            .then((registration) => {
+                console.log("Service Worker 註冊成功:", registration);
+            }).catch((error) => {
+                console.log("Service Worker 註冊失敗:", error);
+            });
+    }
+
     // 取得提醒時間 (20250317 加入firebase以前的版本)
     loadReminderTime();
 
