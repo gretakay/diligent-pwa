@@ -33,9 +33,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
     }
 
-    // 取得提醒時間 (20250317 加入firebase以前的版本)
-    loadReminderTime();
-
     // 訂閱推播
     await subscribeToPush();
 
@@ -99,16 +96,28 @@ function checkReminder() {
     const currentTime = now.getHours().toString().padStart(2, "0") + ":" + now.getMinutes().toString().padStart(2, "0");
     const reminderTime = localStorage.getItem("reminderTime");
 
+    // 固定的提醒時間
+    const morningReminder = "08:00";
+    const eveningReminder = "22:00";
+
     if (reminderTime && currentTime === reminderTime) {
         sendPushNotification();
+    }
+
+    if (currentTime === morningReminder) {
+        sendPushNotification("晨起發願-四弘誓願3次", "早上8點的提醒");
+    }
+
+    if (currentTime === eveningReminder) {
+        sendPushNotification("甘露法語/夜省三業", "晚上10點的提醒");
     }
 }
 
 // **5️⃣ 直接顯示通知（不透過伺服器）**
-function sendPushNotification() {
+function sendPushNotification(title = "每日發四弘誓願", body = "眾生無邊誓願度，煩惱無盡誓願斷，法門無量誓願學，佛道無上誓願成") {
     navigator.serviceWorker.ready.then(registration => {
-        registration.showNotification("每日發四弘誓願", {
-            body: "眾生無邊誓願度，煩惱無盡誓願斷，法門無量誓願學，佛道無上誓願成",
+        registration.showNotification(title, {
+            body: body,
             icon: "/icon.png"
         });
     });
